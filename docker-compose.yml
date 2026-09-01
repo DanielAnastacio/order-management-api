@@ -1,0 +1,23 @@
+services:
+  ordermanagement-api:
+    build:
+      context: .
+      dockerfile: OrderManagement.Api/Dockerfile
+
+    container_name: ordermanagement-api
+
+    user: root
+
+    ports:
+      - "8082:8080"
+
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_URLS: http://+:8080
+      ConnectionStrings__DefaultConnection: "Data Source=/data/ordermanagement.db"
+
+    volumes:
+      - ordermanagement-data:/data
+
+volumes:
+  ordermanagement-data:

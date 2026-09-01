@@ -1,0 +1,55 @@
+@host = https://localhost:8082
+
+### Login
+# @name login
+POST {{host}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "dev@martech.com",
+  "password": "Senha@123"
+}
+
+###
+
+### Create order
+# @name createOrder
+POST {{host}}/api/orders
+Authorization: Bearer {{login.response.body.$.token}}
+Content-Type: application/json
+
+{
+  "customerId": "8d73db0a-0cf1-4cf2-a170-89441dbe51b7",
+  "items": [
+    {
+      "productName": "Notebook",
+      "quantity": 1,
+      "unitPrice": 5000.00
+    },
+    {
+      "productName": "Mouse",
+      "quantity": 2,
+      "unitPrice": 150.00
+    }
+  ]
+}
+
+###
+
+### List orders
+GET {{host}}/api/orders?page=1&pageSize=10
+Authorization: Bearer {{login.response.body.$.token}}
+
+###
+
+### Get order by id
+GET {{host}}/api/orders/{{createOrder.response.body.$.id}}
+Authorization: Bearer {{login.response.body.$.token}}
+
+###
+
+### Cancel order
+PATCH {{host}}/api/orders/{{createOrder.response.body.$.id}}/cancel
+Authorization: Bearer {{login.response.body.$.token}}
+
+###
